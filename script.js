@@ -38,6 +38,8 @@ const drawCircle = (x, y, radius) => {
   c.stroke();
 };
 
+let randomX = Math.random() * window.innerWidth;
+let randomY = Math.random() * window.innerHeight;
 // Draw random circles
 // for (let i = 0; i < 5; i++) {
 //   let randomX = Math.random() * window.innerWidth * 0.8;
@@ -46,4 +48,4 @@ const drawCircle = (x, y, radius) => {
 //   drawCircle(randomX, randomY, randomRadius);
 // }
 
-drawCircle(500, 500, 100);
+drawCircle(randomX, randomY, 100);
