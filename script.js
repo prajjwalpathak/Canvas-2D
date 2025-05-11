@@ -1,8 +1,8 @@
-var canvas = document.querySelector("canvas");
+let canvas = document.querySelector("canvas");
 canvas.width = window.innerWidth * 0.96;
 canvas.height = window.innerHeight * 0.96;
 
-var c = canvas.getContext("2d");
+let c = canvas.getContext("2d");
 
 // Rectangle
 // c.fillStyle = "rgb(0, 82, 171)";
@@ -11,14 +11,14 @@ var c = canvas.getContext("2d");
 // c.fillRect(200, 200, 400, 400);
 
 // Line
-// var x1 = 100;
-// var y1 = 100;
-// var x2 = 4 * x1;
-// var y2 = y1;
-// var x3 = x2;
-// var y3 = 4 * y2;
-// var x4 = x1;
-// var y4 = y3;
+// let x1 = 100;
+// let y1 = 100;
+// let x2 = 4 * x1;
+// let y2 = y1;
+// let x3 = x2;
+// let y3 = 4 * y2;
+// let x4 = x1;
+// let y4 = y3;
 
 // c.beginPath();
 // c.moveTo(x1, y1);
@@ -30,22 +30,51 @@ var c = canvas.getContext("2d");
 // c.stroke();
 
 // Arc
-var PI = 22 / 7;
-const drawCircle = (x, y, radius) => {
-  c.beginPath();
-  c.arc(x, y, radius, 0, 2 * PI, false);
-  c.strokeStyle = "black";
-  c.stroke();
-};
+let PI = 22 / 7;
+// const drawCircle = (x, y, radius) => {
+//   c.beginPath();
+//   c.arc(x, y, radius, 0, 2 * PI, false);
+//   c.strokeStyle = "black";
+//   c.stroke();
+// };
 
-let randomX = Math.random() * window.innerWidth;
-let randomY = Math.random() * window.innerHeight;
+// let randomX = Math.random() * canvas.width;
+// let randomY = Math.random() * canvas.height;
 // Draw random circles
 // for (let i = 0; i < 5; i++) {
-//   let randomX = Math.random() * window.innerWidth * 0.8;
-//   let randomY = Math.random() * window.innerHeight * 0.8;
+//   let randomX = Math.random() * canvas.width;
+//   let randomY = Math.random() * canvas.height;
 //   let randomRadius = Math.random() * 100;
 //   drawCircle(randomX, randomY, randomRadius);
 // }
 
-drawCircle(randomX, randomY, 100);
+// drawCircle(randomX, randomY, 100);
+
+let x = 500;
+let y = 500;
+let radius = 100;
+let dx = 3;
+let dy = 3;
+
+const animate = () => {
+
+  requestAnimationFrame(animate);
+  c.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  c.beginPath();
+  c.arc(x, y, radius, 0, 2 * PI, false);
+  c.strokeStyle = "black";
+  c.stroke();
+
+  if(x + radius > canvas.width || x - radius < 0) {
+    dx = -dx;
+  }
+
+  if(y + radius > canvas.height || y - radius < 0) {
+    dy = -dy;
+  }
+
+  x += dx;
+  y += dy; 
+}
+
+animate();
