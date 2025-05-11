@@ -1,2 +1,4 @@
 # Canvas-2D
-HTML Canvas 
+HTML Canvas
+
+Change scripts in index.html manually to change projects.
