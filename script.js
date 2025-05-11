@@ -53,34 +53,97 @@ let c = canvas.getContext("2d");
 
 // Bouncing circle animation
 
+// const getRandom = (min, max) => {
+//   return Math.random() * (max - min) + min;
+// };
+
+// let radius = 50;
+// let dx = 5;
+// let dy = 5;
+// let x = getRandom(radius, canvas.width - radius);
+// let y = getRandom(radius, canvas.height - radius);
+
+// const animate = () => {
+//   requestAnimationFrame(animate);
+//   c.clearRect(0, 0, window.innerWidth, window.innerHeight);
+//   c.beginPath();
+//   c.arc(x, y, radius, 0, 2 * PI, false);
+//   c.strokeStyle = "black";
+//   c.stroke();
+
+//   if (x + radius > canvas.width || x - radius < 0) {
+//     dx = -dx;
+//   }
+
+//   if (y + radius > canvas.height || y - radius < 0) {
+//     dy = -dy;
+//   }
+
+//   x += dx;
+//   y += dy;
+// };
+
+// animate();
+
+// Random Bouncing Circles
+
+class Circle {
+  constructor(x, y, radius, dx, dy) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.dx = dx;
+    this.dy = dy;
+  }
+
+  createCircle() {
+    c.beginPath();
+    c.arc(this.x, this.y, this.radius, 0, 2 * PI, false);
+    c.strokeStyle = "black";
+    c.stroke();
+  }
+
+  // Update Circle direction after collision
+  updatecircle() {
+    if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
+      this.dx = -this.dx;
+    }
+
+    if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+      this.dy = -this.dy;
+    }
+
+    this.x += this.dx;
+    this.y += this.dy;
+
+    this.createCircle();
+  }
+}
+
 const getRandom = (min, max) => {
   return Math.random() * (max - min) + min;
 };
 
-let radius = 50;
-let dx = 5;
-let dy = 5;
-let x = getRandom(radius, canvas.width - radius);
-let y = getRandom(radius, canvas.height - radius);
+// Creating Circle objects and storing it in an Array of objects
+let n = 10;
+let circleArray = [];
+for (let i = 0; i < n; i++) {
+  let randomRadius = getRandom(10, canvas.height / 4);
+  let dx = getRandom(0, 5);
+  let dy = getRandom(0, 5);
+  let randomX = getRandom(randomRadius, canvas.width - randomRadius);
+  let randomY = getRandom(randomRadius, canvas.height - randomRadius);
+  circleArray.push(new Circle(randomX, randomY, randomRadius, dx, dy));
+}
 
+// Animate funtion for all Circle objects
 const animate = () => {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  c.beginPath();
-  c.arc(x, y, radius, 0, 2 * PI, false);
-  c.strokeStyle = "black";
-  c.stroke();
 
-  if (x + radius > canvas.width || x - radius < 0) {
-    dx = -dx;
+  for (let i = 0; i < n; i++) {
+    circleArray[i].updatecircle();
   }
-
-  if (y + radius > canvas.height || y - radius < 0) {
-    dy = -dy;
-  }
-
-  x += dx;
-  y += dy;
 };
 
 animate();
