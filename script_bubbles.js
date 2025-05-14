@@ -19,6 +19,12 @@ window.addEventListener("mousemove", (event) => {
   mouse.y = event.y;
 });
 
+// Resize canvas everytime the window is resized
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth * 0.96;
+  canvas.height = window.innerHeight * 0.96;
+});
+
 class Circle {
   constructor(x, y, radius, dx, dy, color) {
     this.x = x;
@@ -85,13 +91,13 @@ let n = 300;
 let circleArray = [];
 for (let i = 0; i < n; i++) {
   let randomColor = assignRandomColor();
-  let radius = 6;
-  let dx = getRandom(-3, 3);
-  let dy = getRandom(-3, 3);
-  let randomX = getRandom(radius, canvas.width - radius);
-  let randomY = getRandom(radius, canvas.height - radius);
+  let randomRadius = getRandom(6, 12);
+  let randomDX = getRandom(-3, 3);
+  let randomDY = getRandom(-3, 3);
+  let randomX = getRandom(randomRadius, canvas.width - randomRadius);
+  let randomY = getRandom(randomRadius, canvas.height - randomRadius);
   circleArray.push(
-    new Circle(randomX, randomY, radius, dx, dy, randomColor)
+    new Circle(randomX, randomY, randomRadius, randomDX, randomDY, randomColor)
   );
 }
 
