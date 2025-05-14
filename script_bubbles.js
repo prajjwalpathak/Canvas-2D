@@ -1,4 +1,6 @@
 let PI = 22 / 7;
+let MAX_RADIUS = 60;
+let MIN_RADIUS = 6;
 let canvas = document.querySelector("canvas");
 canvas.width = window.innerWidth * 0.96;
 canvas.height = window.innerHeight * 0.96;
@@ -18,19 +20,20 @@ window.addEventListener("mousemove", (event) => {
 });
 
 class Circle {
-  constructor(x, y, radius, dx, dy) {
+  constructor(x, y, radius, dx, dy, color) {
     this.x = x;
     this.y = y;
     this.radius = radius;
     this.dx = dx;
     this.dy = dy;
+    this.color = color;
   }
 
   createCircle() {
     c.beginPath();
     c.arc(this.x, this.y, this.radius, 0, 2 * PI, false);
-    c.strokeStyle = "black";
-    c.fillStyle = "black";
+    c.strokeStyle = this.color;
+    c.fillStyle = this.color;
     c.fill();
     c.stroke();
   }
@@ -50,12 +53,13 @@ class Circle {
       mouse.x - this.x < 50 &&
       mouse.x - this.x > -50 &&
       mouse.y - this.y < 50 &&
-      mouse.y - this.y > -50 &&
-      this.radius < canvas.height / 8
+      mouse.y - this.y > -50
     ) {
-      this.radius += 2;
-    } else if (this.radius > 10) {
-      this.radius -= 2;
+      if (this.radius < MAX_RADIUS) {
+        this.radius += 3;
+      }
+    } else if (this.radius > MIN_RADIUS) {
+      this.radius -= 3;
     }
 
     this.x += this.dx;
@@ -69,16 +73,26 @@ const getRandom = (min, max) => {
   return Math.random() * (max - min) + min;
 };
 
+// Assigns random color
+const assignRandomColor = () => {
+  let colorArray = ["#309898", "#FF9F00", "#F4631E", "#CB0404"];
+  let random = Math.floor(getRandom(0, 4));
+  return colorArray[random];
+};
+
 // Creating Circle objects and storing it in an Array of objects
-let n = 256;
+let n = 300;
 let circleArray = [];
 for (let i = 0; i < n; i++) {
-  let randomRadius = 10;
+  let randomColor = assignRandomColor();
+  let randomRadius = 6;
   let dx = getRandom(0, 3);
   let dy = getRandom(0, 3);
   let randomX = getRandom(randomRadius, canvas.width - randomRadius);
   let randomY = getRandom(randomRadius, canvas.height - randomRadius);
-  circleArray.push(new Circle(randomX, randomY, randomRadius, dx, dy));
+  circleArray.push(
+    new Circle(randomX, randomY, randomRadius, dx, dy, randomColor)
+  );
 }
 
 // Animate funtion for all Circle objects
