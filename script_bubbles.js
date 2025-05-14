@@ -23,6 +23,8 @@ window.addEventListener("mousemove", (event) => {
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth * 0.96;
   canvas.height = window.innerHeight * 0.96;
+
+  init();
 });
 
 class Circle {
@@ -81,32 +83,46 @@ const getRandom = (min, max) => {
 
 // Assigns random color
 const assignRandomColor = () => {
-  let colorArray = ["#309898", "#FF9F00", "#F4631E", "#CB0404"];
-  let random = Math.floor(getRandom(0, 4));
+  let colorArray = ["#F21905", "#730C02", "#F23827", "#D9D9D9", "#0D0D0D"];
+  let random = Math.floor(getRandom(0, colorArray.length));
   return colorArray[random];
 };
 
 // Creating Circle objects and storing it in an Array of objects
-let n = 300;
 let circleArray = [];
-for (let i = 0; i < n; i++) {
-  let randomColor = assignRandomColor();
-  let randomRadius = getRandom(6, 12);
-  let randomDX = getRandom(-3, 3);
-  let randomDY = getRandom(-3, 3);
-  let randomX = getRandom(randomRadius, canvas.width - randomRadius);
-  let randomY = getRandom(randomRadius, canvas.height - randomRadius);
-  circleArray.push(
-    new Circle(randomX, randomY, randomRadius, randomDX, randomDY, randomColor)
-  );
-}
+
+const init = () => {
+  let n = 300;
+  circleArray = [];
+  for (let i = 0; i < n; i++) {
+    let randomColor = assignRandomColor();
+    let randomRadius = getRandom(6, 18);
+    let randomDX = getRandom(-3, 3);
+    let randomDY = getRandom(-3, 3);
+    let randomX = getRandom(randomRadius, canvas.width - randomRadius);
+    let randomY = getRandom(randomRadius, canvas.height - randomRadius);
+    circleArray.push(
+      new Circle(
+        randomX,
+        randomY,
+        randomRadius,
+        randomDX,
+        randomDY,
+        randomColor
+      )
+    );
+  }
+};
+
+// Running init function first time
+init();
 
 // Animate funtion for all Circle objects
 const animate = () => {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < circleArray.length; i++) {
     circleArray[i].updatecircle();
   }
 };
