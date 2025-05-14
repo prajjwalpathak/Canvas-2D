@@ -85,13 +85,13 @@ let n = 300;
 let circleArray = [];
 for (let i = 0; i < n; i++) {
   let randomColor = assignRandomColor();
-  let randomRadius = 6;
-  let dx = getRandom(0, 3);
-  let dy = getRandom(0, 3);
-  let randomX = getRandom(randomRadius, canvas.width - randomRadius);
-  let randomY = getRandom(randomRadius, canvas.height - randomRadius);
+  let radius = 6;
+  let dx = getRandom(-3, 3);
+  let dy = getRandom(-3, 3);
+  let randomX = getRandom(radius, canvas.width - radius);
+  let randomY = getRandom(radius, canvas.height - radius);
   circleArray.push(
-    new Circle(randomX, randomY, randomRadius, dx, dy, randomColor)
+    new Circle(randomX, randomY, radius, dx, dy, randomColor)
   );
 }
 
