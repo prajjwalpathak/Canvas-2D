@@ -26,28 +26,33 @@ const animate = () => {
 // Call animate()
 animate();
 
+// Ball class
 class Ball {
-  constructor(x, y, radius) {
+  constructor(x, y, radius, color) {
     this.x = x;
     this.y = y;
     this.radius = radius;
+    this.color = color;
   }
 
+  // function to create ball
   createBall() {
     const startAngle = 0;
     const endAngle = 2 * PI;
     c.beginPath();
     c.arc(this.x, this.y, this.radius, startAngle, endAngle);
-    c.strokeStyle = 'black';
-    c.fillStyle = 'black';
+    c.strokeStyle = this.color;
+    c.fillStyle = this.color;
     c.fill();
     c.stroke();
   }
 }
 
+// init function to initialize Ball instance
 const init = () => {
-  const ball = new Ball(100, 100, 100);
+  const ball = new Ball(600, 200, 100, "black");
   ball.createBall();
 };
 
+// Call init()
 init();
