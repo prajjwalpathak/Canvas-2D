@@ -14,6 +14,13 @@ const getRandom = (min, max) => {
   return Math.random() * (max - min) + min;
 };
 
+const init = () => {
+  // Your code
+};
+
+// Call init()
+init();
+
 // Animate function
 const animate = () => {
   requestAnimationFrame(animate);
@@ -23,26 +30,3 @@ const animate = () => {
 
 // Call animate()
 animate();
-
-class Ball {
-  constructor(x, y, radius) {
-    this.x = x;
-    this.y = y;
-    this.radius = radius;
-  }
-
-  createBall() {
-    const startAngle = 0;
-    const endAngle = 2 * PI;
-    c.beginPath();
-    c.arc(this.x, this.y, this.radius, startAngle, endAngle);
-    c.stroke();
-  }
-}
-
-const init = () => {
-  const ball = new Ball(100, 100, 100);
-  ball.createBall();
-};
-
-init();
