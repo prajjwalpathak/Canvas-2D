@@ -1,6 +1,8 @@
 const PI = 22 / 7;
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
+canvas.width = window.innerWidth * 0.96;
+canvas.height = window.innerHeight * 0.96;
 
 // Resize canvas everytime the window is resized
 window.addEventListener("resize", () => {
@@ -24,7 +26,7 @@ init();
 // Animate function
 const animate = () => {
   requestAnimationFrame(animate);
-  c.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  // c.clearRect(0, 0, window.innerWidth, window.innerHeight);
   // Your code
 };
 
