@@ -18,9 +18,10 @@ const getRandom = (min, max) => {
 
 // Ball class
 class Ball {
-  constructor(x, y, radius, color) {
+  constructor(x, y, dy, radius, color) {
     this.x = x;
     this.y = y;
+    this.dy = dy;
     this.radius = radius;
     this.color = color;
   }
@@ -38,12 +39,13 @@ class Ball {
   }
 
   motionBall() {
-    if(this.y < canvas.height) {
-      this.y += 1;
+    if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+      this.dy = -this.dy;
+    } else {
+      this.dy += 2;
     }
-    else if(this.y < canvas.height) {
-      this.y -= 1;
-    }
+    this.y += this.dy;
+
     this.createBall();
   }
 }
@@ -51,7 +53,7 @@ class Ball {
 let ball;
 // init function to initialize Ball instance
 const init = () => {
-  ball = new Ball(600, 200, 100, "black");
+  ball = new Ball(canvas.width/2, canvas.height/4, 2, 100, "black");
   ball.createBall();
 };
 
@@ -62,7 +64,7 @@ init();
 const animate = () => {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  
+
   ball.motionBall();
 };
 
