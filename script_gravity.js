@@ -16,16 +16,6 @@ const getRandom = (min, max) => {
   return Math.random() * (max - min) + min;
 };
 
-// Animate function
-const animate = () => {
-  requestAnimationFrame(animate);
-  // c.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  // Your code
-};
-
-// Call animate()
-animate();
-
 // Ball class
 class Ball {
   constructor(x, y, radius, color) {
@@ -46,13 +36,35 @@ class Ball {
     c.fill();
     c.stroke();
   }
+
+  motionBall() {
+    if(this.y < canvas.height) {
+      this.y += 1;
+    }
+    else if(this.y < canvas.height) {
+      this.y -= 1;
+    }
+    this.createBall();
+  }
 }
 
+let ball;
 // init function to initialize Ball instance
 const init = () => {
-  const ball = new Ball(600, 200, 100, "black");
+  ball = new Ball(600, 200, 100, "black");
   ball.createBall();
 };
 
 // Call init()
 init();
+
+// Animate function
+const animate = () => {
+  requestAnimationFrame(animate);
+  c.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  
+  ball.motionBall();
+};
+
+// Call animate()
+animate();
