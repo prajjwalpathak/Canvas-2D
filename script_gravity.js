@@ -1,13 +1,15 @@
 const PI = 22 / 7;
+const CANVAS_WIDTH = window.innerWidth * 0.96;
+const CANVAS_HEIGHT = window.innerHeight * 0.96;
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
-canvas.width = window.innerWidth * 0.96;
-canvas.height = window.innerHeight * 0.96;
+canvas.width = CANVAS_WIDTH;
+canvas.height = CANVAS_HEIGHT;
 
 // Resize canvas everytime the window is resized
 window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth * 0.96;
-  canvas.height = window.innerHeight * 0.96;
+  canvas.width = CANVAS_WIDTH;
+  canvas.height = CANVAS_HEIGHT;
   init();
 });
 
@@ -18,10 +20,12 @@ const getRandom = (min, max) => {
 
 // Ball class
 class Ball {
-  constructor(x, y, dy, radius, color) {
+  constructor(x, y, dy, g, f, radius, color) {
     this.x = x;
     this.y = y;
     this.dy = dy;
+    this.g = g;
+    this.f = f;
     this.radius = radius;
     this.color = color;
   }
@@ -40,9 +44,9 @@ class Ball {
 
   motionBall() {
     if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
-      this.dy = -this.dy;
+      this.dy = -this.dy * this.f;
     } else {
-      this.dy += 2;
+      this.dy += this.g;
     }
     this.y += this.dy;
 
@@ -53,7 +57,7 @@ class Ball {
 let ball;
 // init function to initialize Ball instance
 const init = () => {
-  ball = new Ball(canvas.width/2, canvas.height/4, 2, 100, "black");
+  ball = new Ball(canvas.width / 2, canvas.height / 4, 2, 1, 0.9, 100, "black");
   ball.createBall();
 };
 
