@@ -42,14 +42,21 @@ class Ball {
     c.stroke();
   }
 
-  motionBall() {
-    if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+  addGravity() {
+    // ball_height + radius + dy >= canvas_height
+    // ball_height - radius <= 0
+    if (
+      this.y + this.radius + this.dy >= canvas.height ||
+      this.y - this.radius <= 0
+    ) {
+      // Adding friction reduces height since dy is reduced
       this.dy = -this.dy * this.f;
     } else {
+      // Adding gravity - if free falling then increase speed by g
       this.dy += this.g;
     }
+    // Add speed
     this.y += this.dy;
-
     this.createBall();
   }
 }
@@ -57,7 +64,7 @@ class Ball {
 let ball;
 // init function to initialize Ball instance
 const init = () => {
-  ball = new Ball(canvas.width / 2, canvas.height / 4, 2, 1, 0.9, 100, "black");
+  ball = new Ball(canvas.width / 2, canvas.height / 4, 2, 1, 0.9, 64, "black");
   ball.createBall();
 };
 
@@ -69,7 +76,7 @@ const animate = () => {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-  ball.motionBall();
+  ball.addGravity();
 };
 
 // Call animate()
