@@ -1,15 +1,18 @@
 const PI = 22 / 7;
-const CANVAS_WIDTH = window.innerWidth * 0.96;
-const CANVAS_HEIGHT = window.innerHeight * 0.96;
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
-canvas.width = CANVAS_WIDTH;
-canvas.height = CANVAS_HEIGHT;
+canvas.width = window.innerWidth * 0.96;
+canvas.height = window.innerHeight * 0.96;
 
 // Resize canvas everytime the window is resized
 window.addEventListener("resize", () => {
-  canvas.width = CANVAS_WIDTH;
-  canvas.height = CANVAS_HEIGHT;
+  canvas.width = window.innerWidth * 0.96;
+  canvas.height = window.innerHeight * 0.96;
+  init();
+});
+
+// Restart animation when screen clicked
+window.addEventListener("click", () => {
   init();
 });
 
@@ -36,7 +39,7 @@ class Ball {
     const endAngle = 2 * PI;
     c.beginPath();
     c.arc(this.x, this.y, this.radius, startAngle, endAngle);
-    c.strokeStyle = 'black';
+    c.strokeStyle = "black";
     c.fillStyle = this.color;
     c.fill();
     c.stroke();
@@ -87,6 +90,7 @@ const endAngle = 2 * PI;
 
 // init function to initialize Ball instance
 const init = () => {
+  ballArray = [];
   for (let i = 0; i < n; i++) {
     let randomRadius = getRandom(32, 64);
     let randomColor = assignRandomColor();
