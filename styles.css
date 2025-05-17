@@ -10,9 +10,10 @@ body {
     height: 100dvh;
     align-items: center;
     justify-content: center;
+    background-color: #1d1d1d;
 }
 
 canvas {
-    background-color: #ffffff;
+    background-color: #0b0b0b;
     border: 1px black solid;
 }

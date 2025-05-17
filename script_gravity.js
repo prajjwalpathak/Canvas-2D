@@ -36,7 +36,7 @@ class Ball {
     const endAngle = 2 * PI;
     c.beginPath();
     c.arc(this.x, this.y, this.radius, startAngle, endAngle);
-    c.strokeStyle = this.color;
+    c.strokeStyle = 'black';
     c.fillStyle = this.color;
     c.fill();
     c.stroke();
@@ -61,14 +61,54 @@ class Ball {
   }
 }
 
-let ball;
-// init function to initialize Ball instance
-const init = () => {
-  ball = new Ball(canvas.width / 2, canvas.height / 4, 2, 1, 0.9, 64, "black");
-  ball.createBall();
+// Assigns random color
+const assignRandomColor = () => {
+  let colorArray = [
+    "#10454F",
+    "#506266",
+    "#818274",
+    "#A3AB78",
+    "#BDE038",
+    "#042940",
+    "#005C53",
+    "#9FC131",
+    "#DBF227",
+    "#D6D58E",
+  ];
+  let random = Math.floor(getRandom(0, colorArray.length));
+  return colorArray[random];
 };
 
-// Call init()
+let n = 16;
+let ball;
+let ballArray = [];
+const startAngle = 0;
+const endAngle = 2 * PI;
+
+// init function to initialize Ball instance
+const init = () => {
+  for (let i = 0; i < n; i++) {
+    let randomRadius = getRandom(32, 64);
+    let randomColor = assignRandomColor();
+    let randomX = getRandom(randomRadius, canvas.width - randomRadius);
+    let randomY = getRandom(randomRadius, canvas.height / 4);
+    let randomDY = getRandom(2, 3);
+    let randomGravity = getRandom(0.1, 2);
+    let randomFriction = getRandom(0.7, 0.99);
+
+    ball = new Ball(
+      randomX,
+      randomY,
+      randomDY,
+      randomGravity,
+      randomFriction,
+      randomRadius,
+      randomColor
+    );
+    ballArray.push(ball);
+  }
+};
+
 init();
 
 // Animate function
@@ -76,7 +116,9 @@ const animate = () => {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-  ball.addGravity();
+  for (let i = 0; i < ballArray.length; i++) {
+    ballArray[i].addGravity();
+  }
 };
 
 // Call animate()
