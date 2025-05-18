@@ -1,15 +1,13 @@
 const PI = 22 / 7;
-const CANVAS_WIDTH = window.innerWidth * 0.96;
-const CANVAS_HEIGHT = window.innerHeight * 0.96;
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
-canvas.width = CANVAS_WIDTH;
-canvas.height = CANVAS_HEIGHT;
+canvas.width = window.innerWidth;;
+canvas.height = window.innerHeight;
 
 // Resize canvas everytime the window is resized
 window.addEventListener("resize", () => {
-  canvas.width = CANVAS_WIDTH;
-  canvas.height = CANVAS_HEIGHT;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
   init();
 });
 
