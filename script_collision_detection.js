@@ -49,11 +49,12 @@ class Circle {
 }
 
 let cir1;
-let loc = {
-  x: canvas.width / 2,
-  y: canvas.height / 2,
-};
+let loc;
 const init = () => {
+  loc = {
+    x: canvas.width / 2,
+    y: canvas.height / 2,
+  };
   cir1 = new Circle(loc.x, loc.y, 64, 2, 2);
 };
 
