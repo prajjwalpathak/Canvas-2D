@@ -49,23 +49,28 @@ class Circle {
 }
 
 let cir1;
+let loc = {
+  x: canvas.width / 2,
+  y: canvas.height / 2,
+};
 const init = () => {
-  cir1 = new Circle(100, 100, 64, 2, 2);
+  cir1 = new Circle(loc.x, loc.y, 64, 2, 2);
 };
 
 // Call init()
 init();
 
-// mouse object to store mouse co-ordinates
-let mouse = {
-  x: undefined,
-  y: undefined,
-};
-
-// Mouse event listener
-window.addEventListener("mousemove", (event) => {
-  mouse.x = event.x;
-  mouse.y = event.y;
+const speed = 16;
+window.addEventListener("keypress", (event) => {
+  if (event.key === "d") {
+    loc.x += speed;
+  } else if (event.key === "w") {
+    loc.y -= speed;
+  } else if (event.key === "a") {
+    loc.x -= speed;
+  } else if (event.key === "s") {
+    loc.y += speed;
+  }
 });
 
 // Animate function
@@ -73,9 +78,9 @@ const animate = () => {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
+  cir1.x = loc.x;
+  cir1.y = loc.y;
   cir1.nextFrame();
-  cir1.x = mouse.x;
-  cir1.y = mouse.y;
 };
 
 // Call animate()
