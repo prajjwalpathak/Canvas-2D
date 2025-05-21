@@ -27,6 +27,7 @@ class Circle {
     // Create Circle
     c.beginPath();
     c.arc(this.x, this.y, this.radius, 0, 2 * PI, false);
+    c.strokeStyle = "black";
     c.stroke();
   }
 
@@ -36,6 +37,7 @@ class Circle {
 }
 
 let cir1;
+let cir2;
 let loc;
 let mouse = {
   x: undefined,
@@ -80,6 +82,13 @@ window.addEventListener("mousemove", (event) => {
   mouse.y = event.y;
 });
 
+// Get Distance between two points
+const getDistance = (x1, y1, x2, y2) => {
+  let xDistance = x2 - x1;
+  let yDistance = y2 - y1;
+  return Math.sqrt(xDistance * xDistance + yDistance * yDistance);
+};
+
 // Animate function
 const animate = () => {
   requestAnimationFrame(animate);
@@ -94,6 +103,13 @@ const animate = () => {
   cir2.x = mouse.x;
   cir2.y = mouse.y;
   cir2.nextFrame();
+
+  if (
+    getDistance(mouse.x, mouse.y, loc.x, loc.y) <=
+    cir1.radius + cir2.radius
+  ) {
+    console.log("collision");
+  }
 };
 
 // Call animate()
