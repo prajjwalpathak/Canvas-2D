@@ -17,12 +17,10 @@ const getRandom = (min, max) => {
 };
 
 class Circle {
-  constructor(x, y, radius, dx, dy) {
+  constructor(x, y, radius) {
     this.x = x;
     this.y = y;
     this.radius = radius;
-    this.dx = dx;
-    this.dy = dy;
   }
 
   draw() {
@@ -33,34 +31,35 @@ class Circle {
   }
 
   nextFrame() {
-    // window.addEventListener("keypress", (event) => {
-    //   if (event.key === "d") {
-    //     this.x += this.dx;
-    //   } else if (event.key === "w") {
-    //     this.y += this.dy;
-    //   } else if (event.key === "a") {
-    //     this.x -= this.dx;
-    //   } else if (event.key === "s") {
-    //     this.y -= this.dy;
-    //   }
-    // });
     this.draw();
   }
 }
 
 let cir1;
 let loc;
+let mouse = {
+  x: undefined,
+  y: undefined,
+};
+
 const init = () => {
+  // Initialize circle location
   loc = {
     x: canvas.width / 2,
     y: canvas.height / 2,
   };
-  cir1 = new Circle(loc.x, loc.y, 64, 2, 2);
+
+  //Circle 1
+  cir1 = new Circle(loc.x, loc.y, 64);
+
+  //Circle 2
+  cir2 = new Circle(mouse.x, mouse.y, 32);
 };
 
 // Call init()
 init();
 
+// Keyboard controls - event listener
 const speed = 16;
 window.addEventListener("keypress", (event) => {
   if (event.key === "d") {
@@ -74,14 +73,27 @@ window.addEventListener("keypress", (event) => {
   }
 });
 
+// Mouse controls - event listener
+window.addEventListener("mousemove", (event) => {
+  // mouse event to mouse object
+  mouse.x = event.x;
+  mouse.y = event.y;
+});
+
 // Animate function
 const animate = () => {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
+  // Circle 1 next frame
   cir1.x = loc.x;
   cir1.y = loc.y;
   cir1.nextFrame();
+
+  // Circle 2 next frame
+  cir2.x = mouse.x;
+  cir2.y = mouse.y;
+  cir2.nextFrame();
 };
 
 // Call animate()
