@@ -17,10 +17,11 @@ const getRandom = (min, max) => {
 };
 
 class Circle {
-  constructor(x, y, radius) {
+  constructor(x, y, radius, color) {
     this.x = x;
     this.y = y;
     this.radius = radius;
+    this.color = color;
   }
 
   draw() {
@@ -28,7 +29,13 @@ class Circle {
     c.beginPath();
     c.arc(this.x, this.y, this.radius, 0, 2 * PI, false);
     c.strokeStyle = "black";
+    c.fillStyle = this.color;
+    c.fill();
     c.stroke();
+  }
+
+  changeColor(color) {
+    this.color = color;
   }
 
   nextFrame() {
@@ -52,10 +59,10 @@ const init = () => {
   };
 
   //Circle 1
-  cir1 = new Circle(loc.x, loc.y, 64);
+  cir1 = new Circle(loc.x, loc.y, 64, "gray");
 
   //Circle 2
-  cir2 = new Circle(mouse.x, mouse.y, 32);
+  cir2 = new Circle(mouse.x, mouse.y, 32, "black");
 };
 
 // Call init()
@@ -104,11 +111,14 @@ const animate = () => {
   cir2.y = mouse.y;
   cir2.nextFrame();
 
+  // Condition: if distance between two circles <= sum of radius of two circles
   if (
     getDistance(mouse.x, mouse.y, loc.x, loc.y) <=
     cir1.radius + cir2.radius
   ) {
-    console.log("collision");
+    cir1.changeColor("red");
+  } else {
+    cir1.changeColor("gray");
   }
 };
 
