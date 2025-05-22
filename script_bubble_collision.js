@@ -16,12 +16,17 @@ const getRandom = (min, max) => {
   return Math.random() * (max - min) + min;
 };
 
+const getRandomDirection = () => {
+  let speed = [2, -2];
+  return speed[Math.floor(getRandom(0, 2))];
+};
+
 class Bubble {
   constructor(radius) {
     this.x = getRandom(radius, canvas.width - radius);
     this.y = getRandom(radius, canvas.height - radius);
-    this.dx = 2;
-    this.dy = 2;
+    this.dx = getRandomDirection();
+    this.dy = getRandomDirection();
     this.radius = radius;
     this.color = "black";
   }
@@ -51,7 +56,7 @@ class Bubble {
 }
 
 let bubbleArray = [];
-let n = 10;
+let n = 32;
 const init = () => {
   for (let i = 0; i < n; i++) {
     bubbleArray.push(new Bubble(32));
