@@ -21,14 +21,20 @@ const getRandomDirection = () => {
   return speed[Math.floor(getRandom(0, 2))];
 };
 
+const getDistance = (x1, y1, x2, y2) => {
+  let xDistance = x2 - x1;
+  let yDistance = y2 - y1;
+  return Math.sqrt(xDistance * xDistance + yDistance * yDistance);
+};
+
 class Bubble {
-  constructor(radius) {
-    this.x = getRandom(radius, canvas.width - radius);
-    this.y = getRandom(radius, canvas.height - radius);
+  constructor(x, y, radius) {
+    this.x = x;
+    this.y = y;
     this.dx = getRandomDirection();
     this.dy = getRandomDirection();
     this.radius = radius;
-    this.color = "black";
+    this.color = "#dddddd";
   }
 
   createBubble() {
@@ -36,7 +42,7 @@ class Bubble {
     c.arc(this.x, this.y, this.radius, 0, 2 * PI, false);
     c.strokeStyle = "black";
     c.fillStyle = this.color;
-    c.fill();
+    // c.fill();
     c.stroke();
   }
 
@@ -56,14 +62,29 @@ class Bubble {
 }
 
 let bubbleArray = [];
+let radius = 32;
 let n = 32;
+let randomX = getRandom(radius, canvas.width - radius);
+let randomY = getRandom(radius, canvas.height - radius);
+bubbleArray.push(new Bubble(randomX, randomY, radius));
 const init = () => {
-  for (let i = 0; i < n; i++) {
-    bubbleArray.push(new Bubble(32));
+  for (let i = 1; i < n; i++) {
+    for (let j = 0; j < bubbleArray.length; j++) {
+      if (
+        getDistance(randomX, randomY, bubbleArray[j].x, bubbleArray[j].y) -
+          2 * radius <=
+        0
+      ) {
+        randomX = getRandom(radius, canvas.width - radius);
+        randomY = getRandom(radius, canvas.height - radius);
+        j = -1;
+      }
+    }
+    bubbleArray.push(new Bubble(randomX, randomY, radius));
   }
-  for (let i = 0; i < n; i++) {
-    bubbleArray[i].createBubble();
-  }
+  bubbleArray.forEach((bubble) => {
+    bubble.createBubble();
+  });
 };
 
 // Call init()
@@ -74,9 +95,9 @@ const animate = () => {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-  for (let i = 0; i < n; i++) {
-    bubbleArray[i].moveBubble();
-  }
+  bubbleArray.forEach((bubble) => {
+    bubble.moveBubble();
+  });
 };
 
 // Call animate()
