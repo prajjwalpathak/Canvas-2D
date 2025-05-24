@@ -102,3 +102,8 @@ const animate = () => {
 
 // Call animate()
 animate();
+
+// To-do:
+// Add 2D-Newtonian Physics
+// Add Colors
+// Change colors wrt the mouse movements
