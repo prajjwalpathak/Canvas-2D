@@ -73,12 +73,18 @@ class Bubble {
   }
 }
 
+// bubbleArray has all the bubbles stored
 let bubbleArray = [];
+// radius of a bubble
 let radius = 32;
+// n: number of bubbles
 let n = 32;
 let randomX = getRandom(radius, canvas.width - radius);
 let randomY = getRandom(radius, canvas.height - radius);
+
+// Pushing first bubble
 bubbleArray.push(new Bubble(randomX, randomY, radius));
+
 const init = () => {
   for (let i = 1; i < n; i++) {
     for (let j = 0; j < bubbleArray.length; j++) {
@@ -105,8 +111,10 @@ init();
 // Animate function
 const animate = () => {
   requestAnimationFrame(animate);
+  // clear canvas after every new frame
   c.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
+  // For each bubble in bubbleArray call moveBubble()
   bubbleArray.forEach((bubble) => {
     bubble.moveBubble();
   });
