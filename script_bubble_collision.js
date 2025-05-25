@@ -11,6 +11,18 @@ window.addEventListener("resize", () => {
   init();
 });
 
+// mouse object
+let mouse = {
+  x: undefined,
+  y: undefined,
+};
+
+// mouse event listener
+window.addEventListener("mousemove", (event) => {
+  mouse.x = event.x;
+  mouse.y = event.y;
+});
+
 // Random function
 const getRandom = (min, max) => {
   return Math.random() * (max - min) + min;
