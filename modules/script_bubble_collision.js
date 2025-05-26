@@ -1,3 +1,5 @@
+import { getRandom, getDistance, getRandomDirection } from "./utils.js";
+
 const PI = 22 / 7;
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
@@ -23,28 +25,15 @@ window.addEventListener("mousemove", (event) => {
   mouse.y = event.y;
 });
 
-// Random function
-const getRandom = (min, max) => {
-  return Math.random() * (max - min) + min;
-};
-
-const getRandomDirection = () => {
-  let speed = [2, -2];
-  return speed[Math.floor(getRandom(0, 2))];
-};
-
-const getDistance = (x1, y1, x2, y2) => {
-  let xDistance = x2 - x1;
-  let yDistance = y2 - y1;
-  return Math.sqrt(xDistance * xDistance + yDistance * yDistance);
-};
-
 class Bubble {
   constructor(x, y, radius) {
     this.x = x;
     this.y = y;
-    this.dx = getRandomDirection();
-    this.dy = getRandomDirection();
+    this.velocity = {
+      x: getRandomDirection(),
+      y: getRandomDirection(),
+    };
+    this.mass = 1;
     this.radius = radius;
     this.color = "#dddddd";
   }
@@ -60,18 +49,26 @@ class Bubble {
 
   moveBubble() {
     if (this.x + this.radius > canvas.width || this.x - this.radius <= 0) {
-      this.dx = -this.dx;
+      this.velocity.x = -this.velocity.x;
     }
     if (this.y + this.radius > canvas.height || this.y - this.radius <= 0) {
-      this.dy = -this.dy;
+      this.velocity.y = -this.velocity.y;
     }
 
-    this.x += this.dx;
-    this.y += this.dy;
+    this.x += this.velocity.x;
+    this.y += this.velocity.y;
 
     this.createBubble();
   }
 }
+
+const resolveCollision = (bubble, otherBubble) => {
+  let xVelocityDifference = bubble.velocity.x - otherBubble.velocity.x;
+  let yVelocityDifference = bubble.velocity.y - otherBubble.velocity.y;
+
+  let xDistance = otherBubble.x - bubble.x;
+  let yDistance = otherBubble.y - bubble.y;
+};
 
 // bubbleArray has all the bubbles stored
 let bubbleArray = [];
