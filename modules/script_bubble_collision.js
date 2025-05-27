@@ -124,3 +124,4 @@ animate();
 // Add 2D-Newtonian Physics
 // Add Colors
 // Change colors wrt the mouse movements
+// https://en.wikipedia.org/wiki/Elastic_collision
