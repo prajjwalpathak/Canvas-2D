@@ -47,7 +47,7 @@ class Bubble {
     c.stroke();
   }
 
-  moveBubble() {
+  updateBubble() {
     if (this.x + this.radius > canvas.width || this.x - this.radius <= 0) {
       this.velocity.x = -this.velocity.x;
     }
@@ -62,20 +62,13 @@ class Bubble {
   }
 }
 
-const resolveCollision = (bubble, otherBubble) => {
-  let xVelocityDifference = bubble.velocity.x - otherBubble.velocity.x;
-  let yVelocityDifference = bubble.velocity.y - otherBubble.velocity.y;
-
-  let xDistance = otherBubble.x - bubble.x;
-  let yDistance = otherBubble.y - bubble.y;
-};
-
 // bubbleArray has all the bubbles stored
 let bubbleArray = [];
 // radius of a bubble
 let radius = 32;
 // n: number of bubbles
 let n = 32;
+// Random bubble location
 let randomX = getRandom(radius, canvas.width - radius);
 let randomY = getRandom(radius, canvas.height - radius);
 
@@ -111,9 +104,9 @@ const animate = () => {
   // clear canvas after every new frame
   c.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-  // For each bubble in bubbleArray call moveBubble()
+  // For each bubble in bubbleArray call updateBubble()
   bubbleArray.forEach((bubble) => {
-    bubble.moveBubble();
+    bubble.updateBubble();
   });
 };
 
@@ -125,3 +118,4 @@ animate();
 // Add Colors
 // Change colors wrt the mouse movements
 // https://en.wikipedia.org/wiki/Elastic_collision
+// Uniform Grid Spatial Positioning
