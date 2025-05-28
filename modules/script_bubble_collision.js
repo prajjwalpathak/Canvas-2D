@@ -100,10 +100,13 @@ init();
 
 // Function to check if bubbles are colliding or not
 const isColliding = (bubble, otherBubble) => {
-  const dx = otherBubble.x - bubble.x;
-  const dy = otherBubble.y - bubble.y;
-  const distance = Math.hypot(dx, dy); // √(dx² + dy²) Hypotenuse
-  return distance <= c1.radius + c2.radius;
+  const distance = getDistance(
+    bubble.x,
+    bubble.y,
+    otherBubble.x,
+    otherBubble.y
+  );
+  return distance <= bubble.radius + otherBubble.radius;
 };
 
 // Animate function
