@@ -98,15 +98,16 @@ const init = () => {
 // Call init()
 init();
 
-// Function to check if bubbles are colliding or not
+// Function to check if two bubbles are colliding or not
 const isColliding = (bubble, otherBubble) => {
-  const distance = getDistance(
-    bubble.x,
-    bubble.y,
-    otherBubble.x,
-    otherBubble.y
-  );
+  let distance = getDistance(bubble.x, bubble.y, otherBubble.x, otherBubble.y);
   return distance <= bubble.radius + otherBubble.radius;
+};
+
+// Function to check if two bubbles are overlapping or not
+const isOverlapping = (bubble, otherBubble) => {
+  let distance = getDistance(bubble.x, bubble.y, otherBubble.x, otherBubble.y);
+  return distance - bubble.radius + otherBubble.radius < 0;
 };
 
 // Animate function
