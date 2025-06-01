@@ -6,6 +6,13 @@ const c = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+// Bubble
+let bubbleConfig = {
+  n: 128,
+  radius:
+    Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height) / 80,
+};
+
 // Resize canvas everytime the window is resized
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;
@@ -116,9 +123,9 @@ class Bubble {
 
     this.createBubble();
 
-    for(let i=0; i<bubbleArray.length; i++) {
-      if(this === bubbleArray[i]) continue;
-      if(isColliding(this, bubbleArray[i])) {
+    for (let i = 0; i < bubbleArray.length; i++) {
+      if (this === bubbleArray[i]) continue;
+      if (isColliding(this, bubbleArray[i])) {
         resolveCollision(this, bubbleArray[i]);
       }
     }
@@ -127,19 +134,25 @@ class Bubble {
 
 // bubbleArray has all the bubbles stored
 let bubbleArray = [];
-// radius of a bubble
-let radius = 32;
-// n: number of bubbles
-let n = 32;
-// Random bubble location
-let randomX = getRandom(radius, canvas.width - radius);
-let randomY = getRandom(radius, canvas.height - radius);
-
-// Pushing first bubble
-bubbleArray.push(new Bubble(randomX, randomY, radius));
 
 const init = () => {
   bubbleArray = [];
+  bubbleConfig.radius =
+    Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height) / 80;
+
+  // radius of a bubble
+  let radius = bubbleConfig.radius;
+
+  // n: number of bubbles
+  let n = bubbleConfig.n;
+
+  // Random bubble location
+  let randomX = getRandom(radius, canvas.width - radius);
+  let randomY = getRandom(radius, canvas.height - radius);
+
+  // Pushing first bubble
+  bubbleArray.push(new Bubble(randomX, randomY, radius));
+
   for (let i = 1; i < n; i++) {
     for (let j = 0; j < bubbleArray.length; j++) {
       if (
