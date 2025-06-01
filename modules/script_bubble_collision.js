@@ -25,6 +25,62 @@ window.addEventListener("mousemove", (event) => {
   mouse.y = event.y;
 });
 
+// Collision Detection
+const isColliding = (bubble, otherBubble) => {
+  let distance = getDistance(bubble.x, bubble.y, otherBubble.x, otherBubble.y);
+  return distance <= bubble.radius + otherBubble.radius;
+};
+
+// Rotate Function
+const rotate = (velocity, angle) => {
+  let rotatedVelocities = {
+    x: velocity.x * Math.cos(angle) - velocity.y * Math.sin(angle),
+    y: velocity.x * Math.sin(angle) + velocity.y * Math.cos(angle),
+  };
+  return rotatedVelocities;
+};
+
+// Collision Resolution
+const resolveCollision = (bubble, otherBubble) => {
+  let xVelocityDiff = bubble.velocity.x - otherBubble.velocity.x;
+  let yVelocityDiff = bubble.velocity.y - otherBubble.velocity.y;
+
+  let xDistance = otherBubble.x - bubble.x;
+  let yDistance = otherBubble.y - bubble.y;
+
+  // prevent accidental overlap of bubbles
+  if (xVelocityDiff * xDistance + yVelocityDiff * yDistance >= 0) {
+    // angle between the two colliding bubbles
+    let angle = -Math.atan2(yDistance, xDistance);
+    let m1 = bubble.mass;
+    let m2 = otherBubble.mass;
+
+    // velocity before collision
+    let u1 = rotate(bubble.velocity, angle);
+    let u2 = rotate(otherBubble.velocity, angle);
+
+    // velocity after 1-D collision
+    let v1 = {
+      x: (u1.x * (m1 - m2)) / (m1 + m2) + (u2.x * 2 * m2) / (m1 + m2),
+      y: u1.y,
+    };
+    let v2 = {
+      x: (u2.x * (m1 - m2)) / (m1 + m2) + (u1.x * 2 * m2) / (m1 + m2),
+      y: u2.y,
+    };
+
+    // final velocity after rotating axis back to normal
+    let v1Final = rotate(v1, -angle);
+    let v2Final = rotate(v2, -angle);
+
+    bubble.velocity.x = v1Final.x;
+    bubble.velocity.y = v1Final.y;
+
+    otherBubble.velocity.x = v2Final.x;
+    otherBubble.velocity.y = v2Final.y;
+  }
+};
+
 class Bubble {
   constructor(x, y, radius) {
     this.x = x;
@@ -59,6 +115,13 @@ class Bubble {
     this.y += this.velocity.y;
 
     this.createBubble();
+
+    for(let i=0; i<bubbleArray.length; i++) {
+      if(this === bubbleArray[i]) continue;
+      if(isColliding(this, bubbleArray[i])) {
+        resolveCollision(this, bubbleArray[i]);
+      }
+    }
   }
 }
 
@@ -99,61 +162,6 @@ const init = () => {
 // Call init()
 init();
 
-// Function to check if two bubbles are colliding or not
-const isColliding = (bubble, otherBubble) => {
-  let distance = getDistance(bubble.x, bubble.y, otherBubble.x, otherBubble.y);
-  return distance <= bubble.radius + otherBubble.radius;
-};
-
-// Separate Bubbles
-const separateBubbles = (bubble, otherBubble) => {
-  const dx = otherBubble.x - bubble.x;
-  const dy = otherBubble.y - bubble.y;
-  const distance = Math.hypot(dx, dy);
-  const overlap = bubble.radius + otherBubble.radius - distance;
-
-  if (overlap > 0) {
-    const nx = dx / distance; // direction from bubble to otherBubble
-    const ny = dy / distance;
-
-    const totalMass = bubble.mass + otherBubble.mass;
-    const d1 = (overlap * otherBubble.mass) / totalMass;
-    const d2 = (overlap * bubble.mass) / totalMass;
-
-    // Push them apart proportionally
-    bubble.x -= nx * d1;
-    bubble.y -= ny * d1;
-    otherBubble.x += nx * d2;
-    otherBubble.y += ny * d2;
-  }
-};
-
-// Resolve Collision
-const resolveCollision = (bubble, otherBubble) => {
-  let dx = otherBubble.x - bubble.x;
-  let dy = otherBubble.y - bubble.y;
-  let distance = Math.hypot(dx, dy); // same as getDistance
-  let nx = dx / distance; // normal vector
-  let ny = dy / distance; // normal vector
-
-  let relativeVelocityX = bubble.velocity.x - otherBubble.velocity.x;
-  let relativeVelocityY = bubble.velocity.y - otherBubble.velocity.y;
-
-  // This is a dot product. It tells us how much of their motion is toward (or away from) each other
-  // If velocityAlongNormal > 0, they’re moving apart, so we skip
-  let velocityAlongNormal = relativeVelocityX * nx + relativeVelocityY * ny;
-
-  if (velocityAlongNormal > 0) return; // already separating
-
-  // This tells you how strongly to push the two objects apart
-  let impulse = (2 * velocityAlongNormal) / (bubble.mass + otherBubble.mass);
-
-  bubble.velocity.x -= impulse * otherBubble.mass * nx;
-  bubble.velocity.y -= impulse * otherBubble.mass * ny;
-  otherBubble.velocity.x += impulse * bubble.mass * nx;
-  otherBubble.velocity.y += impulse * bubble.mass * ny;
-};
-
 // Animate function
 const animate = () => {
   requestAnimationFrame(animate);
@@ -164,18 +172,6 @@ const animate = () => {
   bubbleArray.forEach((bubble) => {
     bubble.updateBubble();
   });
-
-  for (let i = 0; i < bubbleArray.length; i++) {
-    for (let j = i + 1; j < bubbleArray.length; j++) {
-      let bubble = bubbleArray[i];
-      let otherBubble = bubbleArray[j];
-
-      if (isColliding(bubble, otherBubble)) {
-        separateBubbles(bubble, otherBubble);
-        resolveCollision(bubble, otherBubble);
-      }
-    }
-  }
 };
 
 // Call animate()
